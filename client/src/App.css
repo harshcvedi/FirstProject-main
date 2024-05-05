@@ -1,0 +1,11 @@
+.add_btn{
+    text-align: right;
+}
+
+.container{
+    overflow: auto;
+}
+
+.left_view{
+    font-size: 20px;
+}
