@@ -13,7 +13,7 @@ export default function Fauth() {
         provider.setCustomParameters({ prompt: 'select_account' })
         try {
             const resultsFromFacebook = await signInWithPopup(auth, provider)
-            const res = await fetch('http://localhost:8080/api/auth/facebook', {
+            const res = await fetch('https://firstproject-main.onrender.com/api/auth/facebook', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
