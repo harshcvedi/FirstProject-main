@@ -31,7 +31,7 @@ function Adduser() {
         const { name, email, age, mobile, add } = inpval;
 
 
-        const res=await fetch("http://localhost:8080/adduser",{
+        const res=await fetch("https://firstproject-main-1.onrender.com/adduser",{
             method:"POST",
             headers:{
                 "Content-Type": "application/json"
