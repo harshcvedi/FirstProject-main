@@ -82,7 +82,7 @@ function Register() {
             //     position: "top-center"
             // });
 
-            const data = await fetch("http://localhost:8080/register", {
+            const data = await fetch("https://firstproject-main.onrender.com/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
