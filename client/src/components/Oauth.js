@@ -13,7 +13,7 @@ export default function Oauth() {
         provider.setCustomParameters({ prompt: 'select_account' })
         try {
             const resultsFromGoogle = await signInWithPopup(auth, provider)
-            const res = await fetch('https://firstproject-main.onrender.com/api/auth/google', {
+            const res = await fetch('http://localhost:8080/api/auth/google', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
