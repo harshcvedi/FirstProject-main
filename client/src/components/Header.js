@@ -54,7 +54,7 @@ function Header() {
     
     // http://localhost:8080
 
-    const res = await fetch("http://localhost:8080/logout", {
+    const res = await fetch("https://firstproject-main-1.onrender.com/logout", {
       method: "GET",
       headers: {
           "Content-Type": "application/json",
