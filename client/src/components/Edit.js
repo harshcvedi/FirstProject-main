@@ -39,7 +39,7 @@ function Edit() {
     const getdata = async () => {
       
   
-      const res=await fetch(`http://localhost:8080/getuser/${id}`,{
+      const res=await fetch(`https://firstproject-main-1.onrender.com/getuser/${id}`,{
           method:"GET",
           headers:{
               "Content-Type": "application/json"
@@ -72,7 +72,7 @@ function Edit() {
 
     const {name,email,age,mobile,add}=inpval;
 
-    const res2=await fetch(`http://localhost:8080/updateuser/${id}`,{
+    const res2=await fetch(`https://firstproject-main-1.onrender.com/updateuser/${id}`,{
         method:"PATCH",
         headers:{
             "Content-Type": "application/json"

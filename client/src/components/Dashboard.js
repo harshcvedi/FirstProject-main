@@ -35,7 +35,7 @@ function Dashboard() {
   const getdata = async (e) => {
     
 
-    const res=await fetch("http://localhost:8080/getdata",{
+    const res=await fetch("https://firstproject-main-1.onrender.com/getdata",{
         method:"GET",
         headers:{
             "Content-Type": "application/json"
@@ -73,7 +73,7 @@ useEffect(()=>{
     
     // http://localhost:8080
 
-    const res = await fetch("http://localhost:8080/validuser", {
+    const res = await fetch("https://firstproject-main-1.onrender.com/validuser", {
       method: "GET",
       headers: {
           "Content-Type": "application/json",
@@ -111,7 +111,7 @@ useEffect(()=>{
     }
 
     const deleteuser=async(id)=>{
-        const res2=await fetch(`http://localhost:8080/deleteuser/${id}`,{
+        const res2=await fetch(`https://firstproject-main-1.onrender.com/deleteuser/${id}`,{
           method: "DELETE",
           headers: {
               "Content-Type": "application/json",
