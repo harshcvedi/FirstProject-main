@@ -3,6 +3,8 @@ import "./mix.css";
 import { NavLink,useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Oauth from './Oauth';
+import Fauth from './Fauth';
 
 function Login() {
 
@@ -16,6 +18,14 @@ function Login() {
     });
 
     const history = useNavigate();
+
+    
+    // const loginwithgoogle = async () => {
+    //     window.open("http://localhost:8080/auth/google/callback", "_self");
+    //     // await Dashboard.DashboardValid();
+    //     console.log("Sign in with Google button clicked");
+    //     history("/dashboard");
+    // };
 
 
     const setVal=(e)=>{
@@ -118,8 +128,10 @@ function Login() {
                         Don't have an Account? <NavLink to='/register'>Sign UP</NavLink>
                     </p>
 
+                    
                 </form>
-                
+              <Oauth></Oauth>
+              <Fauth></Fauth>
                 <ToastContainer/>
             </div>
         </section>

@@ -15,12 +15,6 @@ function Register() {
         
 
 
-     const loginwithgoogle = async () => {
-        window.open("http://localhost:8080/auth/google/callback", "_self");
-        // await Dashboard.DashboardValid();
-        console.log("Sign in with Google button clicked");
-        navigate("/dashboard");
-    };
 
     const [passShow, setPassShow] = useState(false);
     const [cpassShow, csetPassShow] = useState(false);
@@ -184,9 +178,9 @@ function Register() {
                         </p>
 
                     </form>
-                    <button className='login-with-google-btn' onClick={loginwithgoogle}>
+                    {/* <button className='login-with-google-btn' onClick={loginwithgoogle}>
                         Sign In with Google
-                    </button>
+                    </button> */}
                     {/* <div>
                         
                         <FacebookLogin

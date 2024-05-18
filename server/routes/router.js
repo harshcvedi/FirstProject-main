@@ -4,6 +4,7 @@ const userdb = require("../models/userSchema");
 const productdb=require("../models/productSchema");
 var bcrypt = require("bcryptjs");
 const authenticate=require("../middleware/authenticate");
+const keysecret="harshchaturvedihafhsvhahvhsbahvhsvhbs";
 
 const fetch=require('node-fetch-commonjs');
 const google = require("../models/googleSchema");
@@ -12,9 +13,9 @@ const google = require("../models/googleSchema");
 router.post("/register",async(req,res)=>{
    
 
-    const { name, email, password, cpassword } = req.body;
+    const { fname, email, password, cpassword } = req.body;
 
-    if (!name || !email || !password || !cpassword) {
+    if (!fname || !email || !password || !cpassword) {
         res.status(422).json({ error: "fill all the details" })
     }
     try{
@@ -28,7 +29,7 @@ router.post("/register",async(req,res)=>{
         } else {
 
             const finalUser = new userdb({
-                name, email, password, cpassword
+                fname, email, password, cpassword
             });
 
             // here password hashing
@@ -222,7 +223,52 @@ router.delete("/deleteuser/:id",async(req,res)=>{
     }
 });
 
+router.post("/api/auth/google", async (req, res, next) => {
+    const { email,fname } = req.body;
+    try {
+      const user = await userdb.findOne({ email });
+      if (user) {
+        const token = await user.generateAuthtoken();
+        // cookiegenerate
+        res.cookie("usercookie",token,{
+            expires:new Date(Date.now()+9000000),
+            httpOnly:true
+        });
 
+        const result = {
+            user,
+            token
+        }
+        res.status(201).json({status:201,result})
+      } else {
+        const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+      const newUser = new userdb({
+        fname:fname.toLowerCase().split(' ').join('') +Math.random().toString(9).slice(-4),
+        email,
+        password: hashedPassword,
+        cpassword: hashedPassword
+      });
+      await newUser.save();
+      const token = await newUser.generateAuthtoken();
+      // cookiegenerate
+      res.cookie("usercookie",token,{
+          expires:new Date(Date.now()+9000000),
+          httpOnly:true
+      });
+
+      const result = {
+          newUser,
+          token
+      }
+      res.status(201).json({status:201,result})
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
 // const keysecret = "harshchaturvedihafhsvhaghjhvhsbahvhsvhbs";
 
 // const jwt = require("jsonwebtoken");
@@ -281,5 +327,53 @@ router.delete("/deleteuser/:id",async(req,res)=>{
 //     });
 
 // })
+
+
+router.post("/api/auth/facebook", async (req, res, next) => {
+    const { email,fname } = req.body;
+    try {
+      const user = await userdb.findOne({ email });
+      if (user) {
+        const token = await user.generateAuthtoken();
+        // cookiegenerate
+        res.cookie("usercookie",token,{
+            expires:new Date(Date.now()+9000000),
+            httpOnly:true
+        });
+
+        const result = {
+            user,
+            token
+        }
+        res.status(201).json({status:201,result})
+      } else {
+        const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+      const newUser = new userdb({
+        fname:fname.toLowerCase().split(' ').join('') +Math.random().toString(9).slice(-4),
+        email,
+        password: hashedPassword,
+        cpassword: hashedPassword
+      });
+      await newUser.save();
+      const token = await newUser.generateAuthtoken();
+      // cookiegenerate
+      res.cookie("usercookie",token,{
+          expires:new Date(Date.now()+9000000),
+          httpOnly:true
+      });
+
+      const result = {
+          newUser,
+          token
+      }
+      res.status(201).json({status:201,result})
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
 
 module.exports=router

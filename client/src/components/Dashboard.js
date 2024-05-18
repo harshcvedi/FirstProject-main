@@ -7,21 +7,31 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { LoginContext } from './ContextProvider/Context';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
 
 
 
 
 function Dashboard() {
 
-  
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { logindata, setLoginData } = useContext(LoginContext);
   // console.log(logindata.ValidUserOne.email);
 
   const [getuserdata,setUsserdata]=useState([]);
   console.log(getuserdata);
-
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   
+
   const getdata = async (e) => {
     
 
@@ -96,8 +106,6 @@ useEffect(()=>{
   }, []);
 
 
-
-
     function handleClick(){
         navigate('/adduser');
     }
@@ -124,66 +132,101 @@ useEffect(()=>{
         }
         
     }
-
     
-    
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      setPage(0);
+    };
+    const handleSearchChange = (event) => {
+      setSearchQuery(event.target.value);
+    };
+  
+    const handleSearchKeyPress = (event) => {
+      if (event.key === 'Enter') {
+        const nameToSearch = searchQuery.trim().toLowerCase();
+        const filteredData = getuserdata.filter(user =>
+          user.name.toLowerCase().includes(nameToSearch)
+        );
+        setUsserdata(filteredData);
+      }
+    };
   return (
-
     <div className='mt-5'>
-        <div className='container'>
-            <div className='add_btn mt-2 mb-3'>
-                <button className='btn btn-primary' onClick={handleClick}>Add data</button>
-            </div>
+    <div className='container'>
+      <div className='add_btn mt-2 mb-3'>
+        <button className='btn btn-primary' onClick={() => navigate('/adduser')}>Add data</button>
+      </div>
 
-            <table class="table">
-  <thead>
-    <tr className='table-dark'>
-    <th scope="col">id</th>
-      <th scope="col">Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Phone No.</th>
-      <th scope="col">Address</th>
-      <th scope="col">Age</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
+      <input
+        type="text"
+        className="form-control mb-3"
+        placeholder="Search by name and press Enter"
+        value={searchQuery}
+        onChange={handleSearchChange}
+        onKeyPress={handleSearchKeyPress}
+      />
 
-    {
-      getuserdata.map((element,id)=>{
-        return(
-          <>
-          <tr>
-    <th scope='row'>{id+1}</th>
-      <td>{element.name}</td>
-      <td>{element.email}</td>
-      <td>{element.age}</td>
-      <td>{element.mobile}</td>
-      <td>{element.add}</td>
-      <td>
-          <NavLink to={`view/${element._id}`}><button className='btn btn-success ' style={{marginRight:20 }}><RemoveRedEyeIcon/></button></NavLink>  
-          <NavLink to={`edit/${element._id}`}><button className='btn btn-primary ml-10' style={{marginRight:20}}><EditIcon/></button></NavLink> 
-        <button className='btn btn-danger' onClick={()=>deleteuser(element._id)}><DeleteOutlineIcon/></button>
-      </td>
-    </tr>
-          </>
-        )
-      })
-    }
-    
+<TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>id</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Phone No.</TableCell>
+                <TableCell>Address</TableCell>
+                <TableCell>Age</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {getuserdata.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((element, id) => (
+                <TableRow key={id}>
+                  <TableCell>{id + 1}</TableCell>
+                  <TableCell>{element.name}</TableCell>
+                  <TableCell>{element.email}</TableCell>
+                  <TableCell>{element.mobile}</TableCell>
+                  <TableCell>{element.add}</TableCell>
+                  <TableCell>{element.age}</TableCell>
+                  <TableCell>
+                    <NavLink to={`view/${element._id}`}>
+                      <button className='btn btn-success' style={{ marginRight: '10px' }}>
+                        <RemoveRedEyeIcon />
+                      </button>
+                    </NavLink>
+                    <NavLink to={`edit/${element._id}`}>
+                      <button className='btn btn-primary' style={{ marginRight: '10px' }}>
+                        <EditIcon />
+                      </button>
+                    </NavLink>
+                    <button className='btn btn-danger' onClick={() => deleteuser(element._id)}>
+                      <DeleteOutlineIcon />
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
-   
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={getuserdata.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
 
-    
-   
-  </tbody>
-</table>
-<ToastContainer/>
-        </div>
+        <ToastContainer />
+      </div>
     </div>
-
-
-  )
+  );
 }
 
 export default Dashboard
