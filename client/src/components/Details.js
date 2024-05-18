@@ -22,7 +22,7 @@ function Details() {
     const getdata = async () => {
       
   
-      const res=await fetch(`https://firstproject-main.onrender.com/getuser/${id}`,{
+      const res=await fetch(`http://localhost:8080/getuser/${id}`,{
           method:"GET",
           headers:{
               "Content-Type": "application/json"
